@@ -1,0 +1,107 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <div class="form-group">
+    <label for="firstName">First Name</label>
+    <input
+      formControlName="firstName"
+      name="firstName"
+      type="text"
+      class="form-control"
+    />
+    <div
+      class="alert alert-danger"
+      *ngIf="firstname.touched && !firstname.valid"
+    >
+      <div *ngIf="firstname.errors.required">First Name is required</div>
+      <div *ngIf="firstname.errors.minlength">
+        First Name should contails atleast
+        {{ firstname.errors.minlength.requiredLength }} letters
+      </div>
+      <div *ngIf="firstname.errors.pattern">
+        First Name should not have numbers or spceial characters
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="lastName">Last Name</label>
+    <input
+      formControlName="lastName"
+      name="lastName"
+      type="text"
+      class="form-control"
+    />
+    <div class="alert alert-danger" *ngIf="lastname.touched && !lastname.valid">
+      Last name is required
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="dateOfBirth">Birth Date</label>
+    <input
+      formControlName="dateOfBirth"
+      name="dateOfBirth"
+      type="date"
+      class="form-control"
+      [max]="maxDate"
+    />
+    <div
+      class="alert alert-danger"
+      *ngIf="dateofbirth.touched && !dateofbirth.valid"
+    >
+      <div *ngIf="dateofbirth.errors.required">Birth date is required</div>
+      <div *ngIf="dateofbirth.errors.ageNotEligible">
+        You age must be more than
+        {{ dateofbirth.errors.ageNotEligible.minAge }} and less than
+        {{ dateofbirth.errors.ageNotEligible.maxAge }}
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="contactMethod">Contact Method</label>
+    <select
+      multiple
+      formControlName="contactMethod"
+      name="contactMethod"
+      id="contactMethod"
+      class="form-control"
+    >
+      <option value=""></option>
+      <option *ngFor="let method of contactMethods" [value]="method.id">
+        {{ method.name }}
+      </option>
+    </select>
+    <div
+      class="alert alert-danger"
+      *ngIf="contactmethod.touched && !contactmethod.valid"
+    >
+      Contact Method is required
+    </div>
+  </div>
+  <label>Gender</label>
+  <div class="form-group">
+    <div *ngFor="let s of sexList" class="radio">
+      <label>
+        <input formControlName="sex" name="sex" type="radio" [value]="s.id" />
+        {{ s.name }}
+      </label>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="checkbox">
+      <label>
+        <input
+          formControlName="isSubscribed"
+          name="isSubscribed"
+          type="checkbox"
+        />
+        Accept Term and condition
+      </label>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary" [disabled]="!form.valid">
+    Submit
+  </button>
+  <p>{{ form.value | json }}</p>
+  <p>{{ form.valid }}</p>
+</form>
